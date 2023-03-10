@@ -10,8 +10,8 @@ import hello.jdbc.domain.Member;
  */
 public interface MemberRepositoryEx {
 
-    Member save(Member member);
-    Member select(String memberId);
-    void update(String memberId, int money);
-    void delete(String memberId);
+    Member save(Member member) throws Exception;
+    Member select(String memberId) throws Exception;
+    void update(String memberId, int money) throws Exception;
+    void delete(String memberId) throws Exception;
 }
