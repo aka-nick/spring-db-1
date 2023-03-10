@@ -2,9 +2,11 @@ package hello.jdbc.exception.basic;
 
 import java.net.ConnectException;
 import java.sql.SQLException;
+import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+@Slf4j
 public class UncheckedAppTest {
 
 
@@ -23,6 +25,25 @@ public class UncheckedAppTest {
         Assertions.assertThatThrownBy(() -> c.request())
                 .isInstanceOf(RuntimeException.class);
     }
+
+
+    /**
+     * 예외를 전환할 때는 꼭!!! 기존 예외를 포함해야 한다!!
+     * 그렇지 않으면 스택트레이스를 확인할 때 심각한 문제가 발생할 수 있다. 진짜 문제가 발생한 위치를 찾을 수가 없게된다.
+     */
+    @Test
+    void printEx() {
+        Controller c = new Controller();
+        try {
+            c.request();
+
+        }
+        catch (Exception e) {
+//            e.printStackTrace(); // 좋지 않은 방법(System.out을 통하게 된다). 로그를 남기자.
+            log.info("예외 발생", e); // 이렇게.
+        }
+    }
+
 
     static class Controller {
 
@@ -49,7 +70,9 @@ public class UncheckedAppTest {
             try {
                 runSQL();
             } catch (SQLException e) {
-                throw new RuntimeSQLException(e);
+//                throw new RuntimeSQLException(e);
+                throw new RuntimeSQLException(); // 잘못된 예외 먹어버리기.
+                // 이렇게 하면 실제 발생한 예외 지점/원인을 확인할 수 없게 되는 치명적인 오류가 된다.
             }
         }
         public void runSQL() throws SQLException {
@@ -71,6 +94,10 @@ public class UncheckedAppTest {
     static class RuntimeSQLException extends RuntimeException {
         public RuntimeSQLException(Throwable cause) {
             super(cause);
+        }
+
+        public RuntimeSQLException() {
+            // 기존 익셉션 내용은 여기서 먹어버림.
         }
     }
 }
