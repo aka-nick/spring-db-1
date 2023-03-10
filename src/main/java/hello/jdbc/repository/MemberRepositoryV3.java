@@ -13,6 +13,7 @@ import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.jdbc.support.JdbcUtils;
 
 @Slf4j
+
 public class MemberRepositoryV3 {
 
     private final DataSource dataSource;
