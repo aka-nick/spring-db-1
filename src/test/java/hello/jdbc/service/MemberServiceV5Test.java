@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import hello.jdbc.domain.Member;
 import hello.jdbc.repository.MemberRepository;
-import hello.jdbc.repository.MemberRepositoryV4_2;
 import hello.jdbc.repository.MemberRepositoryV5;
 import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
@@ -36,15 +35,6 @@ class MemberServiceV5Test {
 
     @TestConfiguration
     static class TestConfig {
-//        @Bean
-//        DataSource dataSource() {
-//            return new DriverManagerDataSource(URL, USERNAME, PASSWORD);
-//        }
-//
-//        @Bean
-//        PlatformTransactionManager transactionManager() {
-//            return new DataSourceTransactionManager(dataSource());
-//        }
 
         private final DataSource dataSource;
 
@@ -62,14 +52,6 @@ class MemberServiceV5Test {
             return new MemberServiceV4(memberRepository());
         }
     }
-
-//    @BeforeEach
-//    void beforeEach() {
-//        DriverManagerDataSource dataSource = new DriverManagerDataSource(URL, USERNAME, PASSWORD);
-//        memberRepository = new MemberRepositoryV3(dataSource);
-////        PlatformTransactionManager transactionManager = new DataSourceTransactionManager(dataSource);
-//        memberService = new MemberServiceV3_3(memberRepository);
-//    }
 
     @AfterEach
     void afterEach() {
